@@ -1,8 +1,9 @@
 public class myBST {
-    BSTnode root;
+    protected BSTnode root;
+    // v1.1
+    // add the search customer method.
 
     public myBST() {
-        this.root = null;
     }
 
     public myBST(Customer x) {
@@ -25,16 +26,21 @@ public class myBST {
         root = deleteBST(x, root);
     }
 
+    // search a customer
+    public Customer search(Customer x) {
+        return search(x, root);
+    }
+
     public void Inorder() {
         Inorder(root);
     }
 
-    // BST methods
-    public static BSTnode insertBST(Customer x, BSTnode t) {
+    // BST methods(v1.1 )
+    private static BSTnode insertBST(Customer x, BSTnode t) {
         if (t == null) {
             t = new BSTnode(x);
         } else { // t!=null
-            if (t.data.compareTo(x) > 0) {//x < t.data
+            if (t.data.compareTo(x) > 0) {// x < t.data
                 t.left = insertBST(x, t.left);
             } else { // x >= t.data
                 t.right = insertBST(x, t.right);
@@ -44,17 +50,17 @@ public class myBST {
     }
 
     // delete an element from the BST
-    public static BSTnode deleteBST(Customer x, BSTnode t) {
+    private static BSTnode deleteBST(Customer x, BSTnode t) {
         if (t == null) {
-            throw new IllegalArgumentException("empty");
+            throw new IllegalArgumentException("already empty");
         } else {
             if (t.data.compareTo(x) == 0) {
-                //for node which has 0 or 1 child
+                // for node which has 0 or 1 child
                 if (t.left == null) {
                     return t.right;
                 } else if (t.right == null) {
                     return t.left;
-                //for node wich has 2 children
+                    // for node which has 2 children
                 } else {
                     t.data = findMin(t.right);
                     // delete the original one
@@ -71,28 +77,43 @@ public class myBST {
         return t;
     }
 
-    //find customer with the lowest ascii code
-    public static Customer findMin(BSTnode t) {
+    // search a customer
+    private static Customer search(Customer x, BSTnode t) {
+        if (t == null) {
+            return null;
+        } else if (t.data.compareTo(x) == 0) {
+            return t.data;
+        } else {
+            if (t.data.compareTo(x) < 0) {
+                return search(x, t.right);
+            } else {// t.data.compareTo(x) > 0
+                return search(x, t.left);
+            }
+        }
+    }
+
+    // find the lowest node.data
+    private static Customer findMin(BSTnode t) {
         if (t.left == null) {
             return t.data;
         }
         return findMin(t.left);
     }
 
-    //find customer with the highest ascii code
-    public static Customer findMax(BSTnode t) {
+    // find the highest node.data
+    private static Customer findMax(BSTnode t) {
         if (t.right == null) {
             return t.data;
         }
         return findMax(t.right);
     }
 
-    //print out the Customer list from a to z
-    public static void Inorder(BSTnode t) {
+    // print out the Binary search tree through Inorder
+    private static void Inorder(BSTnode t) {
         if (t != null) {
             // left root right
             Inorder(t.left);
-            System.out.print(t.data + " ");
+            System.out.println(t.data);
             Inorder(t.right);
         }
     }

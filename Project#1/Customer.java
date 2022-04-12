@@ -3,20 +3,42 @@ public class Customer implements Comparable<Customer> {
     private String accNo;
     private double balance;
 
+    // v.1.1
+    // add the condition of withdraw & deposit
+    // new constructor for searching a customer by name
+
+    public Customer() {
+    }
+
+    public Customer(String first, String last) {
+        this.last = last.toLowerCase();
+        this.first = first.toLowerCase();
+    }
+
     public Customer(String first, String last, String accNo, double balance) {
-        this.last = last;
-        this.first = first;
+        if (balance < 0) {
+            throw new IllegalArgumentException("illegal balance");
+        }
+        this.last = last.toLowerCase();
+        this.first = first.toLowerCase();
         this.accNo = accNo;
         this.balance = balance;
-
     }
 
     public void deposit(double amount) {
-        this.balance += amount;
+        if (amount <= 0) {
+            System.out.println("illegalInput");
+        } else {
+            this.balance += amount;
+        }
     }
 
     public void withdraw(double amount) {
-        this.balance += amount;
+        if (amount > this.balance || amount <= 0) {
+            throw new IllegalArgumentException("illegalInput");
+        } else {
+            this.balance -= amount;
+        }
     }
 
     public boolean equals(Customer other) {
@@ -67,11 +89,10 @@ public class Customer implements Comparable<Customer> {
             return value;
         }
         return this.first.compareTo(other.first);
-
     }
 
     @Override
     public String toString() {
-        return "Customer [accNo=" + accNo + ", first=" + first + ", last=" + last + ", balance=" + balance + "]";
+        return accNo + " " + first + " " + last + " " + balance;
     }
 }
